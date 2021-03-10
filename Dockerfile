@@ -23,7 +23,8 @@ RUN apt-get update && apt-get install -y \
     libqt5opengl5-dev \
     libcgal-dev \
     libatlas-base-dev \
-    libsuitesparse-dev
+    libsuitesparse-dev \
+    xvfb    
 
 RUN mkdir /sources
 RUN git clone https://ceres-solver.googlesource.com/ceres-solver "/sources/ceres-solver" \
@@ -40,7 +41,7 @@ WORKDIR /sources/colmap/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release -DTESTS_ENABLED=OFF && make && make install && make clean
 
 # Delete GUI executable
-# RUN rm /usr/local/bin/colmap
+RUN rm /usr/local/bin/colmap
 
 # Remove unnecessary packages
 RUN apt-get purge -y cmake && apt-get autoremove -y
@@ -49,9 +50,5 @@ RUN apt-get purge -y cmake && apt-get autoremove -y
 RUN rm -r /sources
 
 WORKDIR /root
-
-ENV NVIDIA_VISIBLE_DEVICES ${NVIDIA_VISIBLE_DEVICES:-all}
-ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-ENV QT_QPA_PLATFORM offscreen
 
 CMD /bin/bash
