@@ -1,4 +1,4 @@
-FROM nvidia/cudagl:11.2.0-base
+FROM nvidia/cuda:11.0.3-devel-ubuntu18.04
 
 # To suppress user input during tzdata installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -39,9 +39,6 @@ RUN cmake .. -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF && make && make install &&
 RUN mkdir -p /sources/colmap/build
 WORKDIR /sources/colmap/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release -DTESTS_ENABLED=OFF && make && make install && make clean
-
-# Delete GUI executable
-RUN rm /usr/local/bin/colmap
 
 # Remove unnecessary packages
 RUN apt-get purge -y cmake && apt-get autoremove -y
