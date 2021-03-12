@@ -34,3 +34,11 @@ For starting the reconstruction (steps) manually, run
 bash run_interactive.bash
 ```
 to start docker container into an interactive bash.
+
+If no (CUDA capable) GPU is available, the reconstruction can also be started in a CPU mode:
+```
+bash run_npgpu.bash
+```
+This will have a significant performance penalty and only allow sparse reconstruction.
+
+`xvfb` is necessary to simulate a display when running colmap headless.
